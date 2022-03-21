@@ -13,6 +13,7 @@ func sendUserSuccessResponse(c echo.Context, users []User, message string) error
 	var response UsersResponse
 	response.Status = 200
 	response.Message = message
+	response.Data = users
 	return json.NewEncoder(c.Response()).Encode(response)
 }
 
