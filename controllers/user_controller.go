@@ -14,30 +14,37 @@ func GetAllUsers(c echo.Context) error {
 
 	query := "SELECT ID, name, age, address, email FROM users"
 
+	ID, _ := strconv.Atoi(c.QueryParam("id"))
 	name := c.QueryParam("name")
 	age, _ := strconv.Atoi(c.QueryParam("age"))
 	address := c.QueryParam("address")
 	email := c.QueryParam("email")
 
-	if name != "" {
-		query += " WHERE name=" + name
-	} else if age != 0 {
-		if name != "" {
-			query += ", age=" + strconv.Itoa(age)
+	if ID != 0 {
+		query += " WHERE id = " + strconv.Itoa(ID)
+	} else if name != "" {
+		if ID != 0 {
+			query += ", name = '" + name + "'"
 		} else {
-			query += " WHERE age=" + strconv.Itoa(age)
+			query += " WHERE name = '" + name + "'"
+		}
+	} else if age != 0 {
+		if ID != 0 || name != "" {
+			query += ", age = " + strconv.Itoa(age)
+		} else {
+			query += " WHERE age = " + strconv.Itoa(age)
 		}
 	} else if address != "" {
-		if name != "" || age != 0 {
-			query += ", age=" + strconv.Itoa(age)
+		if ID != 0 || name != "" || age != 0 {
+			query += ", address = '" + strconv.Itoa(age) + "'"
 		} else {
-			query += " WHERE address=" + address
+			query += " WHERE address = '" + address + "'"
 		}
 	} else if email != "" {
-		if name != "" || age != 0 || address != "" {
-			query += ", age=" + strconv.Itoa(age)
+		if ID != 0 || name != "" || age != 0 || address != "" {
+			query += ", email = '" + strconv.Itoa(age) + "'"
 		} else {
-			query += " WHERE email=" + email
+			query += " WHERE email = '" + email + "'"
 		}
 	}
 

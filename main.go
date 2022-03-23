@@ -30,6 +30,11 @@ func main() {
 	e.PUT("/users/:userID", echo.HandlerFunc(c.UpdateUser), c.Authenticate)
 	e.DELETE("/users/:userID", echo.HandlerFunc(c.DeleteUser), c.Authenticate)
 
+	// e.GET("/users", c.Authenticate(echo.HandlerFunc(c.GetAllUsers), 0))
+	// e.POST("/users", c.Authenticate(echo.HandlerFunc(c.InsertUser), 0))
+	// e.PUT("/users/:userID", c.Authenticate(echo.HandlerFunc(c.UpdateUser), 0))
+	// e.DELETE("/users/:userID", c.Authenticate(echo.HandlerFunc(c.DeleteUser), 0))
+
 	e.POST("/login", c.Login)
 	e.POST("/logout", c.Logout)
 
