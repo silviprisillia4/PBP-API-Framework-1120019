@@ -169,21 +169,15 @@ func DeleteUser(c echo.Context) error {
 		}
 	}
 
-	_, errQuery := db.Exec("DELETE FROM transactions WHERE userID=?", userID)
+	result, errQuery := db.Exec("DELETE FROM users WHERE id=?", userID)
+
+	num, _ := result.RowsAffected()
 
 	if errQuery == nil {
-		result2, errQuery2 := db.Exec("DELETE FROM users WHERE id=?", userID)
-
-		num2, _ := result2.RowsAffected()
-
-		if errQuery2 == nil {
-			if num2 == 0 {
-				return sendBadRequestResponse(c, "Error 0 Rows Affected")
-			} else {
-				return sendUserSuccessResponse(c, users, "Delete Success")
-			}
+		if num == 0 {
+			return sendBadRequestResponse(c, "Error 0 Rows Affected")
 		} else {
-			return sendBadRequestResponse(c, "Error Can Not Delete")
+			return sendUserSuccessResponse(c, users, "Delete Success")
 		}
 	} else {
 		return sendBadRequestResponse(c, "Error Can Not Delete")
